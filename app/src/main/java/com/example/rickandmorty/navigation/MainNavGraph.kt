@@ -19,10 +19,9 @@ import com.example.rickandmorty.location.presentation.LocationsViewModel
 fun MainNavGraph(
     navController: NavHostController
 ) {
-
     NavHost(
         navController = navController,
-        startDestination = Routes.Locations.route,
+        startDestination = Routes.Locations.route
     ) {
         composable(
             route = Routes.Characters.route,
@@ -32,7 +31,7 @@ fun MainNavGraph(
 
             CharactersScreen(
                 state = state,
-                navigateTocharacter = {navController.navigate(Routes.Character.route + "/${it}")},
+                navigateTocharacter = { navController.navigate(Routes.Character.route + "/${it}") },
             )
         }
         composable(
@@ -47,11 +46,9 @@ fun MainNavGraph(
             val state = viewModel.state.collectAsState()
             viewModel.getCharacter(backstackEntry.arguments?.getString("id")!!)
 
-            state.value.selectedCharacter?.let {
-                CharacterScreen(
-                    character = it
-                )
-            }
+            CharacterScreen(
+                state = state
+            )
         }
         composable(
             route = Routes.Locations.route,

@@ -16,6 +16,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -27,6 +29,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
@@ -34,6 +37,8 @@ import coil.compose.AsyncImage
 import com.example.rickandmorty.R
 import com.example.rickandmorty.characters.data.remote.response.Character
 import com.example.rickandmorty.characters.presentation.state.CharactersState
+import com.example.rickandmorty.navigation.Routes
+import com.example.rickandmorty.ui.theme.RickAndMortyTheme
 
 @Composable
 fun CharactersScreen(
@@ -44,6 +49,13 @@ fun CharactersScreen(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
+        Icon(
+            modifier = Modifier
+                .size(50.dp),
+            painter = painterResource(id = R.drawable.rick_and_morty_icon),
+            contentDescription = "Icon",
+            tint = Color(0xFF24B1C8)
+        )
         Column(
             modifier = Modifier
                 .verticalScroll(rememberScrollState())
@@ -94,13 +106,19 @@ fun CharactersScreen(
                 text = "Main characters",
                 fontSize = 15.sp
             )
-
-            Characters(
-                modifier = Modifier
-                    .padding(vertical = 20.dp),
-                characters = state.value.characterList,
-                navigateTocharacter = {navigateTocharacter(it)}
-            )
+            if (state.value.isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .padding(30.dp)
+                )
+            }else {
+                Characters(
+                    modifier = Modifier
+                        .padding(vertical = 20.dp),
+                    characters = state.value.characterList,
+                    navigateTocharacter = {navigateTocharacter(it)}
+                )
+            }
         }
     }
 }
